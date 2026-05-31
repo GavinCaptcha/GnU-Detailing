@@ -106,7 +106,13 @@ export function BookingWizard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
+      let data: { error?: string; booking?: Booking };
+      try {
+        data = await res.json();
+      } catch {
+        setError("Server error. Please try again.");
+        return;
+      }
       if (!res.ok) {
         setError(data.error ?? "Could not complete booking.");
         return;

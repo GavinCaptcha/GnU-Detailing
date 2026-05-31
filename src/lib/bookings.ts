@@ -1,29 +1,15 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type { Booking, BookingRequest } from "./types";
 import { estimatePrice } from "./services";
+import { loadBookings, saveBookings } from "./bookings-storage";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
-
-async function ensureDataFile(): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  try {
-    await fs.access(BOOKINGS_FILE);
-  } catch {
-    await fs.writeFile(BOOKINGS_FILE, "[]", "utf-8");
-  }
-}
+export { BookingsStorageError } from "./bookings-storage";
 
 export async function readBookings(): Promise<Booking[]> {
-  await ensureDataFile();
-  const raw = await fs.readFile(BOOKINGS_FILE, "utf-8");
-  return JSON.parse(raw) as Booking[];
+  return loadBookings();
 }
 
 export async function writeBookings(bookings: Booking[]): Promise<void> {
-  await ensureDataFile();
-  await fs.writeFile(BOOKINGS_FILE, JSON.stringify(bookings, null, 2), "utf-8");
+  await saveBookings(bookings);
 }
 
 function generateId(): string {

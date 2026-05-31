@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createBooking, readBookings } from "@/lib/bookings";
+import { handleBookingsApiError } from "@/lib/api-errors";
 import { getService } from "@/lib/services";
 import type { BookingRequest, ServiceId, VehicleSize } from "@/lib/types";
 import { isDateBookable, getTimeSlots, loadBookedSlots } from "@/lib/availability";
@@ -30,58 +31,68 @@ function validateBody(body: unknown): body is BookingRequest {
 }
 
 export async function POST(request: Request) {
-  let body: unknown;
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    }
 
-  if (!validateBody(body)) {
+    if (!validateBody(body)) {
+      return NextResponse.json(
+        { error: "Please fill in all required fields correctly." },
+        { status: 400 }
+      );
+    }
+
+    if (!getService(body.serviceId)) {
+      return NextResponse.json({ error: "Invalid service." }, { status: 400 });
+    }
+
+    if (!isDateBookable(body.date)) {
+      return NextResponse.json(
+        { error: "Selected date is not available." },
+        { status: 400 }
+      );
+    }
+
+    const bookings = await readBookings();
+    loadBookedSlots(bookings);
+    const slots = getTimeSlots(body.date);
+    if (!slots.includes(body.time)) {
+      return NextResponse.json(
+        { error: "Selected time is not available." },
+        { status: 400 }
+      );
+    }
+
+    const result = await createBooking({
+      ...body,
+      serviceId: body.serviceId as ServiceId,
+      vehicleSize: body.vehicleSize as VehicleSize,
+      customerName: body.customerName.trim(),
+      email: body.email.trim().toLowerCase(),
+      phone: body.phone.trim(),
+      vehicleMake: body.vehicleMake.trim(),
+      vehicleModel: body.vehicleModel.trim(),
+      vehicleYear: body.vehicleYear.trim(),
+      address: body.address.trim(),
+      notes: typeof body.notes === "string" ? body.notes.trim() : undefined,
+    });
+
+    if ("error" in result) {
+      return NextResponse.json({ error: result.error }, { status: 409 });
+    }
+
+    return NextResponse.json({ booking: result.booking }, { status: 201 });
+  } catch (error) {
+    const storageResponse = handleBookingsApiError(error);
+    if (storageResponse) return storageResponse;
+    console.error("POST /api/bookings failed:", error);
     return NextResponse.json(
-      { error: "Please fill in all required fields correctly." },
-      { status: 400 }
+      { error: "Could not save booking. Please try again." },
+      { status: 500 }
     );
   }
-
-  if (!getService(body.serviceId)) {
-    return NextResponse.json({ error: "Invalid service." }, { status: 400 });
-  }
-
-  if (!isDateBookable(body.date)) {
-    return NextResponse.json(
-      { error: "Selected date is not available." },
-      { status: 400 }
-    );
-  }
-
-  const bookings = await readBookings();
-  loadBookedSlots(bookings);
-  const slots = getTimeSlots(body.date);
-  if (!slots.includes(body.time)) {
-    return NextResponse.json(
-      { error: "Selected time is not available." },
-      { status: 400 }
-    );
-  }
-
-  const result = await createBooking({
-    ...body,
-    serviceId: body.serviceId as ServiceId,
-    vehicleSize: body.vehicleSize as VehicleSize,
-    customerName: body.customerName.trim(),
-    email: body.email.trim().toLowerCase(),
-    phone: body.phone.trim(),
-    vehicleMake: body.vehicleMake.trim(),
-    vehicleModel: body.vehicleModel.trim(),
-    vehicleYear: body.vehicleYear.trim(),
-    address: body.address.trim(),
-    notes: typeof body.notes === "string" ? body.notes.trim() : undefined,
-  });
-
-  if ("error" in result) {
-    return NextResponse.json({ error: result.error }, { status: 409 });
-  }
-
-  return NextResponse.json({ booking: result.booking }, { status: 201 });
 }

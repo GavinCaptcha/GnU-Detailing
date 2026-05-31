@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "env:pull": "vercel env pull .env.local",
+    "verify-storage": "node scripts/verify-storage.mjs"
   },
   "dependencies": {
+    "@upstash/redis": "^1.38.0",
     "next": "^15.3.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
