@@ -1,17 +1,12 @@
 export type VehicleSize = "compact" | "sedan" | "suv" | "truck";
 
-export type ServiceId =
-  | "exterior-wash"
-  | "interior-detail"
-  | "full-detail"
-  | "paint-correction";
+export type ServiceId = "interior-detail";
 
 export interface Service {
   id: ServiceId;
   name: string;
   description: string;
   durationMinutes: number;
-  basePrice: number;
   highlights: string[];
 }
 

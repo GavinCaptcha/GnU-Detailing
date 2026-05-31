@@ -6,7 +6,7 @@ export function Footer() {
           <div>
             <p className="text-lg font-semibold text-white">GnU Detailing</p>
             <p className="mt-1 text-sm text-slate-400">
-              Professional mobile & shop detailing — built by brothers, for
+              Professional interior cleaning in Ithaca — built by brothers, for
               your ride.
             </p>
           </div>

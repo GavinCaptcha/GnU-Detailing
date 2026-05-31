@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { BeforeAfterGallery } from "@/components/BeforeAfterGallery";
 import { ServiceCard } from "@/components/ServiceCard";
-import { SERVICES } from "@/lib/services";
+import { INTERIOR_SERVICE } from "@/lib/services";
 
 export default function HomePage() {
   return (
@@ -9,16 +10,17 @@ export default function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--color-brand-900)_0%,_transparent_60%)] opacity-40" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
           <p className="text-sm font-medium uppercase tracking-widest text-brand-400">
-            Brothers. Detail. Done right.
+            Uncas &amp; Gavin · Ithaca, NY
           </p>
           <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
-            Your car deserves a{" "}
-            <span className="text-brand-400">showroom finish</span>
+            Professional{" "}
+            <span className="text-brand-400">interior cleaning</span> for your
+            ride
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-400">
-            GnU Detailing is a family-run mobile and shop detailing service.
-            Book online in minutes — we&apos;ll come to you or meet at our
-            bay.
+            GnU Detailing specializes in deep interior cleans — vacuum,
+            wipe-down, glass, and more. Book online in minutes and we&apos;ll
+            come to you.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
@@ -27,22 +29,22 @@ export default function HomePage() {
             >
               Reserve a spot
             </Link>
-            <a
-              href="#services"
+            <Link
+              href="#results"
               className="rounded-lg border border-surface-border px-6 py-3.5 text-base font-medium text-slate-300 transition hover:border-slate-500 hover:text-white"
             >
-              View services
-            </a>
+              See before &amp; after
+            </Link>
           </div>
           <ul className="mt-12 flex flex-wrap gap-8 text-sm text-slate-400">
             <li className="flex items-center gap-2">
+              <span className="text-brand-400">★</span> Interior cleaning only
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-brand-400">★</span> Pricing by vehicle type
+            </li>
+            <li className="flex items-center gap-2">
               <span className="text-brand-400">★</span> Easy online booking
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-brand-400">★</span> Mobile or shop service
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-brand-400">★</span> Upfront estimates
             </li>
           </ul>
         </div>
@@ -50,18 +52,18 @@ export default function HomePage() {
 
       <section id="services" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-white">Our services</h2>
+          <h2 className="text-3xl font-bold text-white">Our service</h2>
           <p className="mx-auto mt-3 max-w-lg text-slate-400">
-            From a quick wash to full paint correction — pick what fits your
-            car and schedule.
+            One focus, done right — a thorough interior clean tailored to your
+            vehicle size.
           </p>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
-          {SERVICES.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
+        <div className="mx-auto mt-12 max-w-xl">
+          <ServiceCard service={INTERIOR_SERVICE} />
         </div>
       </section>
+
+      <BeforeAfterGallery />
 
       <section
         id="about"
@@ -71,19 +73,23 @@ export default function HomePage() {
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
               <h2 className="text-3xl font-bold text-white">
-                Built by brothers, for drivers who care
+                About GnU Detailing
               </h2>
-              <p className="mt-4 leading-relaxed text-slate-400">
-                GnU Detailing started with two brothers and a shared obsession
-                with clean lines, glossy paint, and interiors that smell brand
-                new. We treat every vehicle like it&apos;s our own — whether
-                it&apos;s a daily commuter or your weekend project car.
-              </p>
-              <p className="mt-4 leading-relaxed text-slate-400">
-                Book online, get a confirmation with your reference number, and
-                we&apos;ll show up ready to work. No hassle, no surprises on
-                timing.
-              </p>
+              <div className="mt-4 space-y-4 leading-relaxed text-slate-400">
+                <p>
+                  We are two brothers, Uncas and Gavin, born and raised in the
+                  Catskills and new members of the Ithaca community. We are
+                  looking to bring a professional and effective detailing and
+                  cleaning service to others in our community.
+                </p>
+                <p>
+                  What started as a chore — keeping our mother&apos;s car clean
+                  and tidy on the weekends for some spare cash — turned into a
+                  passion for effective and detailed cleaning. We promise to
+                  bring our utmost best to each job and won&apos;t quit until we
+                  are sure that our customer is satisfied.
+                </p>
+              </div>
             </div>
             <div className="rounded-2xl border border-surface-border bg-surface-raised p-8">
               <h3 className="text-lg font-semibold text-white">
@@ -91,7 +97,7 @@ export default function HomePage() {
               </h3>
               <ol className="mt-6 space-y-4">
                 {[
-                  "Choose your service and vehicle size",
+                  "Select your vehicle type for an upfront price",
                   "Pick an open date and time slot",
                   "Enter your contact and vehicle details",
                   "Get instant confirmation with your booking ID",
@@ -116,7 +122,9 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6">
-        <h2 className="text-2xl font-bold text-white">Ready to shine?</h2>
+        <h2 className="text-2xl font-bold text-white">
+          Ready for a cleaner interior?
+        </h2>
         <p className="mt-2 text-slate-400">
           Slots fill up on weekends — book early to secure your time.
         </p>

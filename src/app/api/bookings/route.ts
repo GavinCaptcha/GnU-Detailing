@@ -7,7 +7,7 @@ import { isDateBookable, getTimeSlots, loadBookedSlots } from "@/lib/availabilit
 function validateBody(body: unknown): body is BookingRequest {
   if (!body || typeof body !== "object") return false;
   const b = body as Record<string, unknown>;
-  const serviceIds = ["exterior-wash", "interior-detail", "full-detail", "paint-correction"];
+  const serviceIds = ["interior-detail"];
   const sizes = ["compact", "sedan", "suv", "truck"];
   return (
     typeof b.serviceId === "string" &&

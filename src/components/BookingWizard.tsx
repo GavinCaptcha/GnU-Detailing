@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   formatDateLabel,
   formatTimeLabel,
@@ -10,18 +10,17 @@ import {
 } from "@/lib/availability";
 import {
   estimatePrice,
-  getService,
-  SERVICES,
+  INTERIOR_SERVICE,
   VEHICLE_SIZES,
 } from "@/lib/services";
-import type { Booking, BookingRequest, ServiceId, VehicleSize } from "@/lib/types";
+import type { Booking, BookingRequest, VehicleSize } from "@/lib/types";
 
-const STEPS = ["Service", "Schedule", "Details", "Confirm"] as const;
+const STEPS = ["Vehicle", "Schedule", "Details", "Confirm"] as const;
 
 type Step = (typeof STEPS)[number];
 
 const emptyForm: BookingRequest = {
-  serviceId: "full-detail",
+  serviceId: "interior-detail",
   vehicleSize: "sedan",
   date: "",
   time: "",
@@ -37,21 +36,13 @@ const emptyForm: BookingRequest = {
 
 export function BookingWizard() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [step, setStep] = useState<Step>("Service");
+  const [step, setStep] = useState<Step>("Vehicle");
   const [form, setForm] = useState<BookingRequest>(emptyForm);
   const [bookedSlots, setBookedSlots] = useState<
     { date: string; time: string }[]
   >([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const serviceParam = searchParams.get("service") as ServiceId | null;
-    if (serviceParam && getService(serviceParam)) {
-      setForm((f) => ({ ...f, serviceId: serviceParam }));
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     fetch("/api/availability")
@@ -74,7 +65,6 @@ export function BookingWizard() {
   }, [form.date, bookedSlots]);
 
   const price = estimatePrice(form.serviceId, form.vehicleSize);
-  const service = getService(form.serviceId);
   const stepIndex = STEPS.indexOf(step);
 
   const update = useCallback(
@@ -87,8 +77,8 @@ export function BookingWizard() {
 
   function canProceed(): boolean {
     switch (step) {
-      case "Service":
-        return !!form.serviceId && !!form.vehicleSize;
+      case "Vehicle":
+        return !!form.vehicleSize;
       case "Schedule":
         return !!form.date && !!form.time;
       case "Details":
@@ -153,65 +143,62 @@ export function BookingWizard() {
       </ol>
 
       <div className="rounded-2xl border border-surface-border bg-surface-raised p-6 sm:p-8">
-        {step === "Service" && (
+        {step === "Vehicle" && (
           <div className="space-y-6">
             <div>
               <h2 className="text-xl font-semibold text-white">
-                Choose your service
+                Interior cleaning
               </h2>
               <p className="mt-1 text-sm text-slate-400">
-                Select a package and your vehicle type for an estimated price.
+                Select your vehicle type for your price.
               </p>
             </div>
-            <div className="space-y-3">
-              {SERVICES.map((s) => (
-                <label
-                  key={s.id}
-                  className={`flex cursor-pointer flex-col rounded-xl border p-4 transition ${
-                    form.serviceId === s.id
-                      ? "border-brand-500 bg-brand-600/10"
-                      : "border-surface-border hover:border-slate-500"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="service"
-                    className="sr-only"
-                    checked={form.serviceId === s.id}
-                    onChange={() => update("serviceId", s.id)}
-                  />
-                  <div className="flex justify-between gap-2">
-                    <span className="font-medium text-white">{s.name}</span>
-                    <span className="text-sm text-brand-300">
-                      from ${s.basePrice}
-                    </span>
-                  </div>
-                  <span className="mt-1 text-sm text-slate-400">
-                    {s.description}
-                  </span>
-                </label>
-              ))}
+            <div className="rounded-xl border border-surface-border bg-surface/50 p-4">
+              <p className="font-medium text-white">{INTERIOR_SERVICE.name}</p>
+              <p className="mt-1 text-sm text-slate-400">
+                {INTERIOR_SERVICE.description}
+              </p>
+              <ul className="mt-3 space-y-1">
+                {INTERIOR_SERVICE.highlights.map((h) => (
+                  <li
+                    key={h}
+                    className="flex items-center gap-2 text-sm text-slate-300"
+                  >
+                    <span className="text-brand-400">✓</span>
+                    {h}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
-                Vehicle size
+                Vehicle type
               </label>
-              <select
-                value={form.vehicleSize}
-                onChange={(e) =>
-                  update("vehicleSize", e.target.value as VehicleSize)
-                }
-                className="w-full rounded-lg border border-surface-border bg-surface px-4 py-3 text-white outline-none focus:border-brand-500"
-              >
+              <div className="space-y-2">
                 {VEHICLE_SIZES.map((v) => (
-                  <option key={v.id} value={v.id}>
-                    {v.label}
-                  </option>
+                  <label
+                    key={v.id}
+                    className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition ${
+                      form.vehicleSize === v.id
+                        ? "border-brand-500 bg-brand-600/10"
+                        : "border-surface-border hover:border-slate-500"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="vehicleSize"
+                      className="sr-only"
+                      checked={form.vehicleSize === v.id}
+                      onChange={() => update("vehicleSize", v.id)}
+                    />
+                    <span className="font-medium text-white">{v.label}</span>
+                    <span className="text-brand-300">${v.price}</span>
+                  </label>
                 ))}
-              </select>
+              </div>
             </div>
             <p className="rounded-lg bg-brand-600/10 px-4 py-3 text-center text-lg font-semibold text-brand-300">
-              Estimated total: ${price}
+              Your price: ${price}
             </p>
           </div>
         )}
@@ -371,13 +358,13 @@ export function BookingWizard() {
               </p>
             </div>
             <dl className="divide-y divide-surface-border text-sm">
-              <Row label="Service" value={service?.name ?? ""} />
+              <Row label="Service" value={INTERIOR_SERVICE.name} />
               <Row
                 label="Vehicle"
                 value={`${form.vehicleYear} ${form.vehicleMake} ${form.vehicleModel}`}
               />
               <Row
-                label="Size"
+                label="Vehicle type"
                 value={
                   VEHICLE_SIZES.find((v) => v.id === form.vehicleSize)?.label ??
                   ""
@@ -392,13 +379,13 @@ export function BookingWizard() {
               <Row label="Email" value={form.email} />
               {form.notes && <Row label="Notes" value={form.notes} />}
               <div className="flex justify-between pt-4 text-base font-semibold text-white">
-                <dt>Estimated total</dt>
+                <dt>Total</dt>
                 <dd className="text-brand-300">${price}</dd>
               </div>
             </dl>
             <p className="text-xs text-slate-500">
-              Final price may adjust on-site based on vehicle condition. Payment
-              is collected after service.
+              Final price may adjust on-site for heavily soiled interiors.
+              Payment is collected after service.
             </p>
           </div>
         )}
