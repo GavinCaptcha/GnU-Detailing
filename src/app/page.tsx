@@ -87,14 +87,13 @@ export default function HomePage() {
               <div className="mt-6 space-y-5 leading-relaxed text-slate-400">
                 <p>
                   We&apos;re Uncas and Gavin — brothers born and raised in the
-                  Catskills, and proud to call Ithaca home. We started GnU
-                  Detailing to give our neighbors a cleaning service that&apos;s
-                  professional, affordable, and done with genuine care.
+                  Catskills, and proud to now call Ithaca our home. We started GnU
+                  Detailing to give our neighbors and fellow Ithacans a detailing service that&apos; delivers
+                  professional work, affordable prices, and is done with genuine care.
                 </p>
                 <p>
-                  It began on weekends, scrubbing and vacuuming our
-                  mother&apos;s car for a little extra cash. What started as a
-                  chore quickly became something we looked forward to: seeing a
+                  What started as a chore on weekends, scrubbing and vacuuming our
+                  mother&apos;s car for a little extra cash. quickly became something we looked forward to: seeing a
                   cabin go from messy to spotless, and knowing we did it right.
                   That same focus on detail is what we bring to every job today.
                 </p>
