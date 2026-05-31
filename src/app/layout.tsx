@@ -6,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "GnU Detailing | Book Your Detail",
   description:
-    "Professional interior car cleaning in Ithaca by brothers Uncas and Gavin. Book online with pricing by vehicle type.",
+    "Professional interior car cleaning in Ithaca by brothers Uncas and Gavin. Book online with pricing based on vehicle type.",
 };
 
 export default function RootLayout({
@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen antialiased">
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen antialiased" suppressHydrationWarning>
         <Header />
         <main>{children}</main>
         <Footer />

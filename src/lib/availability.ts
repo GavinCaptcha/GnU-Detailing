@@ -34,6 +34,18 @@ function getHoursForDate(dateStr: string): { open: number; close: number } | nul
   return BUSINESS_HOURS.weekdays;
 }
 
+/** YYYY-MM-DD in the local timezone (avoids UTC day-shift from toISOString). */
+export function toLocalDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+export function getTodayLocal(): string {
+  return toLocalDateString(new Date());
+}
+
 export function isDateBookable(dateStr: string): boolean {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -50,7 +62,7 @@ export function getAvailableDates(daysAhead = 30): string[] {
   for (let i = 0; i <= daysAhead; i++) {
     const d = new Date(today);
     d.setDate(d.getDate() + i);
-    const iso = d.toISOString().slice(0, 10);
+    const iso = toLocalDateString(d);
     if (isDateBookable(iso) && getTimeSlots(iso).length > 0) dates.push(iso);
   }
   return dates;
@@ -68,13 +80,10 @@ export function getTimeSlots(dateStr: string): string[] {
     if (!booked.has(time)) slots.push(time);
   }
 
-  const now = new Date();
-  const isToday =
-    dateStr ===
-    `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const isToday = dateStr === getTodayLocal();
 
   if (isToday) {
-    const currentHour = now.getHours();
+    const currentHour = new Date().getHours();
     return slots.filter((t) => parseInt(t, 10) > currentHour);
   }
 

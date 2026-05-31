@@ -22,6 +22,7 @@ function PhotoFrame({
         width={680}
         height={1020}
         priority={priority}
+        sizes="(max-width: 1024px) 90vw, 340px"
         className="aspect-[3/4] w-full object-cover"
       />
       {caption && (

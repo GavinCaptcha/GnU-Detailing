@@ -1,3 +1,5 @@
+import "server-only";
+
 import { Redis } from "@upstash/redis";
 import { promises as fs } from "fs";
 import path from "path";
@@ -65,7 +67,7 @@ export function isVercelDeployment(): boolean {
   return process.env.VERCEL === "1";
 }
 
-export function getRedisClient(): Redis {
+function getRedisClient(): Redis {
   const creds = resolveRedisCredentials();
   if (!creds) {
     throw new BookingsStorageError(VERCEL_STORAGE_SETUP_MESSAGE);
@@ -74,8 +76,7 @@ export function getRedisClient(): Redis {
 }
 
 export async function pingRedis(): Promise<boolean> {
-  const redis = getRedisClient();
-  const result = await redis.ping();
+  const result = await getRedisClient().ping();
   return result === "PONG";
 }
 
@@ -100,14 +101,12 @@ async function saveBookingsToFile(bookings: Booking[]): Promise<void> {
 }
 
 async function loadBookingsFromRedis(): Promise<Booking[]> {
-  const redis = getRedisClient();
-  const data = await redis.get<Booking[]>(BOOKINGS_KEY);
+  const data = await getRedisClient().get<Booking[]>(BOOKINGS_KEY);
   return data ?? [];
 }
 
 async function saveBookingsToRedis(bookings: Booking[]): Promise<void> {
-  const redis = getRedisClient();
-  await redis.set(BOOKINGS_KEY, bookings);
+  await getRedisClient().set(BOOKINGS_KEY, bookings);
 }
 
 export async function loadBookings(): Promise<Booking[]> {

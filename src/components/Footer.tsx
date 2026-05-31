@@ -23,7 +23,7 @@ export function Footer() {
             </p>
           </div>
         </div>
-        <p className="mt-8 text-center text-xs text-slate-500">
+        <p className="mt-8 text-center text-xs text-slate-500" suppressHydrationWarning>
           © {new Date().getFullYear()} GnU Detailing. All rights reserved.
         </p>
       </div>

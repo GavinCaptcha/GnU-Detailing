@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { BookingWizard } from "@/components/BookingWizard";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Book an Appointment | GnU Detailing",
 };

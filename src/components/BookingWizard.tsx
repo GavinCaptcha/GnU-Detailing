@@ -44,26 +44,30 @@ export function BookingWizard() {
   >([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [scheduleReady, setScheduleReady] = useState(false);
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
 
   useEffect(() => {
+    setAvailableDates(getAvailableDates());
+    setScheduleReady(true);
+
     fetch("/api/availability")
       .then((r) => r.json())
-      .then((data: { slots: { date: string; time: string }[] }) =>
-        setBookedSlots(data.slots)
+      .then((data: { slots?: { date: string; time: string }[] }) =>
+        setBookedSlots(data.slots ?? [])
       )
       .catch(() => {});
   }, []);
 
-  const availableDates = useMemo(() => getAvailableDates(), []);
   const timeSlots = useMemo(() => {
-    if (!form.date) return [];
+    if (!scheduleReady || !form.date) return [];
     const booked = new Set(
       bookedSlots
         .filter((s) => s.date === form.date)
         .map((s) => s.time)
     );
     return getTimeSlots(form.date).filter((t) => !booked.has(t));
-  }, [form.date, bookedSlots]);
+  }, [form.date, bookedSlots, scheduleReady]);
 
   const price = estimatePrice(form.serviceId, form.vehicleSize);
   const stepIndex = STEPS.indexOf(step);
@@ -209,6 +213,9 @@ export function BookingWizard() {
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Date
               </label>
+              {!scheduleReady ? (
+                <p className="text-sm text-slate-400">Loading available dates…</p>
+              ) : (
               <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3">
                 {availableDates.slice(0, 21).map((d) => (
                   <button
@@ -228,8 +235,9 @@ export function BookingWizard() {
                   </button>
                 ))}
               </div>
+              )}
             </div>
-            {form.date && (
+            {form.date && scheduleReady && (
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-300">
                   Time
