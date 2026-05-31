@@ -35,10 +35,19 @@ Vercel cannot write to `data/bookings.json`. Bookings use **Upstash Redis** when
 
 ### Connect your Redis database to the site
 
-1. [vercel.com](https://vercel.com) → **Storage** → open the Redis database you created.
-2. **Connect to Project** → choose your GnU Detailing project.
-3. Enable **Production** and **Preview** (recommended: Development too).
-4. **Deployments** → latest deployment → **⋯** → **Redeploy** (required so env vars load).
+**If “Connect” only offers `STORAGE_URL`:** that’s normal. Connect it, then add the **token** yourself (step 3 below). Bookings need **both** URL and token.
+
+1. [vercel.com](https://vercel.com) → **Storage** → open your Redis database.
+2. **Connect to Project** → choose your GnU Detailing project → select **`STORAGE_URL`** (or all vars offered) → connect.
+3. **Add the token** (if it wasn’t added automatically):
+   - On the same Storage page, open **`.env` / Credentials** (or **Quickstart**).
+   - Copy the **REST token** (not the `redis://` URL).
+   - **Project** → **Settings** → **Environment Variables** → add:
+     - Name: `STORAGE_TOKEN` (or `KV_REST_API_TOKEN`)
+     - Value: paste the token
+     - Environments: Production + Preview
+   - Or paste both as `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`.
+4. **Deployments** → **Redeploy** (required after any env change).
 
 ### Verify it works
 
