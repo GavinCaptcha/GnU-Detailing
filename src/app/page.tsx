@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BeforeAfterGallery } from "@/components/BeforeAfterGallery";
+import { PricingByVehicle } from "@/components/PricingByVehicle";
 import { ServiceCard } from "@/components/ServiceCard";
 import { INTERIOR_SERVICE } from "@/lib/services";
 
@@ -10,17 +11,16 @@ export default function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--color-brand-900)_0%,_transparent_60%)] opacity-40" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
           <p className="text-sm font-medium uppercase tracking-widest text-brand-400">
-            Uncas &amp; Gavin · Ithaca, NY
+            Brothers · Ithaca · Interior specialists
           </p>
           <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
-            Professional{" "}
-            <span className="text-brand-400">interior cleaning</span> for your
-            ride
+            A cleaner cabin that{" "}
+            <span className="text-brand-400">feels brand new</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-400">
-            GnU Detailing specializes in deep interior cleans — vacuum,
-            wipe-down, glass, and more. Book online in minutes and we&apos;ll
-            come to you.
+            GnU Detailing focuses on professional interior cleaning for the
+            Ithaca area. Book online in minutes — we come to you with
+            everything we need.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
@@ -29,19 +29,19 @@ export default function HomePage() {
             >
               Reserve a spot
             </Link>
-            <Link
-              href="#results"
+            <a
+              href="#services"
               className="rounded-lg border border-surface-border px-6 py-3.5 text-base font-medium text-slate-300 transition hover:border-slate-500 hover:text-white"
             >
-              See before &amp; after
-            </Link>
+              View pricing
+            </a>
           </div>
           <ul className="mt-12 flex flex-wrap gap-8 text-sm text-slate-400">
             <li className="flex items-center gap-2">
               <span className="text-brand-400">★</span> Interior cleaning only
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-brand-400">★</span> Pricing by vehicle type
+              <span className="text-brand-400">★</span> Price by vehicle type
             </li>
             <li className="flex items-center gap-2">
               <span className="text-brand-400">★</span> Easy online booking
@@ -54,12 +54,13 @@ export default function HomePage() {
         <div className="text-center">
           <h2 className="text-3xl font-bold text-white">Our service</h2>
           <p className="mx-auto mt-3 max-w-lg text-slate-400">
-            One focus, done right — a thorough interior clean tailored to your
-            vehicle size.
+            We specialize in one thing and do it well — thorough interior
+            cleaning tailored to your vehicle.
           </p>
         </div>
         <div className="mx-auto mt-12 max-w-xl">
           <ServiceCard service={INTERIOR_SERVICE} />
+          <PricingByVehicle />
         </div>
       </section>
 
@@ -70,12 +71,10 @@ export default function HomePage() {
         className="border-y border-surface-border bg-surface-raised/30"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
             <div>
-              <h2 className="text-3xl font-bold text-white">
-                About GnU Detailing
-              </h2>
-              <div className="mt-4 space-y-4 leading-relaxed text-slate-400">
+              <h2 className="text-3xl font-bold text-white">About us</h2>
+              <div className="mt-6 space-y-4 leading-relaxed text-slate-400">
                 <p>
                   We are two brothers, Uncas and Gavin, born and raised in the
                   Catskills and new members of the Ithaca community. We are
@@ -97,7 +96,7 @@ export default function HomePage() {
               </h3>
               <ol className="mt-6 space-y-4">
                 {[
-                  "Select your vehicle type for an upfront price",
+                  "Select your vehicle type for your price",
                   "Pick an open date and time slot",
                   "Enter your contact and vehicle details",
                   "Get instant confirmation with your booking ID",
@@ -122,9 +121,7 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6">
-        <h2 className="text-2xl font-bold text-white">
-          Ready for a cleaner interior?
-        </h2>
+        <h2 className="text-2xl font-bold text-white">Ready for a fresh interior?</h2>
         <p className="mt-2 text-slate-400">
           Slots fill up on weekends — book early to secure your time.
         </p>

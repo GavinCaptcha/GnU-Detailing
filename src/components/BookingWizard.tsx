@@ -13,14 +13,14 @@ import {
   INTERIOR_SERVICE,
   VEHICLE_SIZES,
 } from "@/lib/services";
-import type { Booking, BookingRequest, VehicleSize } from "@/lib/types";
+import type { Booking, BookingRequest } from "@/lib/types";
 
 const STEPS = ["Vehicle", "Schedule", "Details", "Confirm"] as const;
 
 type Step = (typeof STEPS)[number];
 
 const emptyForm: BookingRequest = {
-  serviceId: "interior-detail",
+  serviceId: "interior-cleaning",
   vehicleSize: "sedan",
   date: "",
   time: "",
@@ -150,31 +150,14 @@ export function BookingWizard() {
                 Interior cleaning
               </h2>
               <p className="mt-1 text-sm text-slate-400">
-                Select your vehicle type for your price.
-              </p>
-            </div>
-            <div className="rounded-xl border border-surface-border bg-surface/50 p-4">
-              <p className="font-medium text-white">{INTERIOR_SERVICE.name}</p>
-              <p className="mt-1 text-sm text-slate-400">
                 {INTERIOR_SERVICE.description}
               </p>
-              <ul className="mt-3 space-y-1">
-                {INTERIOR_SERVICE.highlights.map((h) => (
-                  <li
-                    key={h}
-                    className="flex items-center gap-2 text-sm text-slate-300"
-                  >
-                    <span className="text-brand-400">✓</span>
-                    {h}
-                  </li>
-                ))}
-              </ul>
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
-                Vehicle type
+              <label className="mb-3 block text-sm font-medium text-slate-300">
+                Select your vehicle type
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {VEHICLE_SIZES.map((v) => (
                   <label
                     key={v.id}
@@ -192,13 +175,15 @@ export function BookingWizard() {
                       onChange={() => update("vehicleSize", v.id)}
                     />
                     <span className="font-medium text-white">{v.label}</span>
-                    <span className="text-brand-300">${v.price}</span>
+                    <span className="text-lg font-semibold text-brand-300">
+                      ${v.price}
+                    </span>
                   </label>
                 ))}
               </div>
             </div>
             <p className="rounded-lg bg-brand-600/10 px-4 py-3 text-center text-lg font-semibold text-brand-300">
-              Your price: ${price}
+              Your total: ${price}
             </p>
           </div>
         )}

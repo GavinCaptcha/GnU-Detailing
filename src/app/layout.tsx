@@ -4,9 +4,9 @@ import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GnU Detailing | Interior Cleaning in Ithaca",
+  title: "GnU Detailing | Book Your Detail",
   description:
-    "Professional interior car cleaning by Uncas and Gavin. Book online — pricing based on your vehicle type.",
+    "Professional interior car cleaning in Ithaca by brothers Uncas and Gavin. Book online with pricing by vehicle type.",
 };
 
 export default function RootLayout({

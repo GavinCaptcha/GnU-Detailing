@@ -17,7 +17,13 @@ export function Header() {
             href="/#services"
             className="hidden text-sm text-slate-300 hover:text-white sm:inline"
           >
-            Services
+            Pricing
+          </Link>
+          <Link
+            href="/#results"
+            className="hidden text-sm text-slate-300 hover:text-white sm:inline"
+          >
+            Results
           </Link>
           <Link
             href="/#about"

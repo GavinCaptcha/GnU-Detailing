@@ -1,40 +1,45 @@
 import type { Service, VehicleSize } from "./types";
 
 export const INTERIOR_SERVICE: Service = {
-  id: "interior-detail",
+  id: "interior-cleaning",
   name: "Interior Cleaning",
   description:
-    "Deep vacuum, wipe-down, interior glass, and light stain treatment for a fresh, tidy cabin.",
+    "Deep vacuum, wipe-down of all surfaces, interior glass, vents, and light stain treatment — a fresh, tidy cabin you'll notice the moment you sit down.",
   durationMinutes: 90,
   highlights: [
-    "Full interior vacuum",
+    "Full vacuum (seats, floors, trunk)",
     "Dash, console & door panels",
-    "Interior glass & mirrors",
-    "Light stain treatment",
+    "Interior windows & mirrors",
+    "Vents & cup holders",
   ],
 };
-
-export const SERVICES: Service[] = [INTERIOR_SERVICE];
 
 export const VEHICLE_SIZES: {
   id: VehicleSize;
   label: string;
   price: number;
 }[] = [
-  { id: "compact", label: "Compact / Coupe", price: 90 },
-  { id: "sedan", label: "Sedan", price: 110 },
-  { id: "suv", label: "SUV / Crossover", price: 140 },
-  { id: "truck", label: "Truck / Large SUV", price: 165 },
+  { id: "compact", label: "Compact / Coupe", price: 85 },
+  { id: "sedan", label: "Sedan", price: 95 },
+  { id: "suv", label: "SUV / Crossover", price: 115 },
+  { id: "truck", label: "Truck / Large SUV", price: 130 },
 ];
 
+/** @deprecated Use INTERIOR_SERVICE — kept for booking wizard compatibility */
+export const SERVICES = [INTERIOR_SERVICE];
+
 export function getService(id: string): Service | undefined {
-  return SERVICES.find((s) => s.id === id);
+  if (id === INTERIOR_SERVICE.id) return INTERIOR_SERVICE;
+  return undefined;
+}
+
+export function getPriceForVehicle(vehicleSize: VehicleSize): number {
+  return VEHICLE_SIZES.find((v) => v.id === vehicleSize)?.price ?? 0;
 }
 
 export function estimatePrice(
   _serviceId: string,
   vehicleSize: VehicleSize
 ): number {
-  const size = VEHICLE_SIZES.find((v) => v.id === vehicleSize);
-  return size?.price ?? 0;
+  return getPriceForVehicle(vehicleSize);
 }

@@ -1,6 +1,6 @@
 export type VehicleSize = "compact" | "sedan" | "suv" | "truck";
 
-export type ServiceId = "interior-detail";
+export type ServiceId = "interior-cleaning";
 
 export interface Service {
   id: ServiceId;
