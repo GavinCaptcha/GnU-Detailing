@@ -19,10 +19,10 @@ export const VEHICLE_SIZES: {
   label: string;
   price: number;
 }[] = [
-  { id: "compact", label: "Compact / Coupe", price: 85 },
-  { id: "sedan", label: "Sedan", price: 95 },
-  { id: "suv", label: "SUV / Crossover", price: 115 },
-  { id: "truck", label: "Truck / Large SUV", price: 130 },
+  { id: "compact", label: "Compact / Coupe", price: 35 },
+  { id: "sedan", label: "Sedan", price: 45 },
+  { id: "suv", label: "SUV / Crossover", price: 50 },
+  { id: "truck", label: "Truck / Large SUV", price: 50 },
 ];
 
 /** @deprecated Use INTERIOR_SERVICE — kept for booking wizard compatibility */

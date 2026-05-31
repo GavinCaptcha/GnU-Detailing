@@ -7,6 +7,7 @@ import {
   formatTimeLabel,
   getAvailableDates,
   getTimeSlots,
+  getScheduleSummary,
 } from "@/lib/availability";
 import {
   estimatePrice,
@@ -195,7 +196,7 @@ export function BookingWizard() {
                 Pick date & time
               </h2>
               <p className="mt-1 text-sm text-slate-400">
-                We&apos;re closed Sundays. Times shown in your local timezone.
+                {getScheduleSummary()}. Times shown in your local timezone.
               </p>
             </div>
             <div>

@@ -11,8 +11,8 @@ export function Footer() {
             </p>
           </div>
           <div className="text-sm text-slate-400">
-            <p>Mon–Fri: 8 AM – 6 PM</p>
-            <p>Saturday: 9 AM – 4 PM</p>
+            <p>Mon–Fri: after 6 PM</p>
+            <p>Sat–Sun: 8 AM – 8 PM</p>
             <p className="mt-2">
               <a
                 href="mailto:bookings@gnudetailing.com"

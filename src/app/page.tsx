@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BeforeAfterGallery } from "@/components/BeforeAfterGallery";
+import { FoundersGallery } from "@/components/FoundersGallery";
 import { PricingByVehicle } from "@/components/PricingByVehicle";
 import { ServiceCard } from "@/components/ServiceCard";
 import { INTERIOR_SERVICE } from "@/lib/services";
@@ -71,51 +72,70 @@ export default function HomePage() {
         className="border-y border-surface-border bg-surface-raised/30"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(240px,340px)_1fr] lg:gap-14">
+            <FoundersGallery className="mx-auto w-full max-w-sm lg:mx-0" />
             <div>
-              <h2 className="text-3xl font-bold text-white">About us</h2>
-              <div className="mt-6 space-y-4 leading-relaxed text-slate-400">
+              <p className="text-sm font-medium uppercase tracking-widest text-brand-400">
+                Our story
+              </p>
+              <h2 className="mt-2 text-3xl font-bold text-white">
+                About GnU Detailing
+              </h2>
+              <p className="mt-3 text-lg text-slate-300">
+                Two brothers bringing professional interior cleaning to Ithaca.
+              </p>
+              <div className="mt-6 space-y-5 leading-relaxed text-slate-400">
                 <p>
-                  We are two brothers, Uncas and Gavin, born and raised in the
-                  Catskills and new members of the Ithaca community. We are
-                  looking to bring a professional and effective detailing and
-                  cleaning service to others in our community.
+                  We&apos;re Uncas and Gavin — brothers born and raised in the
+                  Catskills, and proud to call Ithaca home. We started GnU
+                  Detailing to give our neighbors a cleaning service that&apos;s
+                  professional, affordable, and done with genuine care.
                 </p>
                 <p>
-                  What started as a chore — keeping our mother&apos;s car clean
-                  and tidy on the weekends for some spare cash — turned into a
-                  passion for effective and detailed cleaning. We promise to
-                  bring our utmost best to each job and won&apos;t quit until we
-                  are sure that our customer is satisfied.
+                  It began on weekends, scrubbing and vacuuming our
+                  mother&apos;s car for a little extra cash. What started as a
+                  chore quickly became something we looked forward to: seeing a
+                  cabin go from messy to spotless, and knowing we did it right.
+                  That same focus on detail is what we bring to every job today.
+                </p>
+                <p>
+                  We show up ready to work, treat your car like our own, and
+                  don&apos;t consider a job done until you&apos;re satisfied
+                  with the result. That&apos;s our standard — on every vehicle,
+                  every time.
                 </p>
               </div>
             </div>
-            <div className="rounded-2xl border border-surface-border bg-surface-raised p-8">
-              <h3 className="text-lg font-semibold text-white">
-                How booking works
-              </h3>
-              <ol className="mt-6 space-y-4">
-                {[
-                  "Select your vehicle type for your price",
-                  "Pick an open date and time slot",
-                  "Enter your contact and vehicle details",
-                  "Get instant confirmation with your booking ID",
-                ].map((text, i) => (
-                  <li key={text} className="flex gap-4">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600/20 text-sm font-bold text-brand-300">
-                      {i + 1}
-                    </span>
-                    <span className="pt-1 text-slate-300">{text}</span>
-                  </li>
-                ))}
-              </ol>
-              <Link
-                href="/book"
-                className="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-brand-600 py-3 font-medium text-white transition hover:bg-brand-500"
-              >
-                Start your reservation
-              </Link>
-            </div>
+          </div>
+
+          <div className="mt-14 rounded-2xl border border-surface-border bg-surface-raised p-8 lg:p-10">
+            <h3 className="text-lg font-semibold text-white">
+              How booking works
+            </h3>
+            <p className="mt-2 text-sm text-slate-400">
+              Reserve your appointment online in a few minutes.
+            </p>
+            <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                "Choose your vehicle type and see your price upfront",
+                "Pick a date and time that works for you",
+                "Share your contact info and service address",
+                "Receive instant confirmation with your booking ID",
+              ].map((text, i) => (
+                <li key={text} className="flex gap-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600/20 text-sm font-bold text-brand-300">
+                    {i + 1}
+                  </span>
+                  <span className="pt-1 text-sm text-slate-300">{text}</span>
+                </li>
+              ))}
+            </ol>
+            <Link
+              href="/book"
+              className="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-brand-600 py-3 font-medium text-white transition hover:bg-brand-500 sm:w-auto sm:px-10"
+            >
+              Start your reservation
+            </Link>
           </div>
         </div>
       </section>

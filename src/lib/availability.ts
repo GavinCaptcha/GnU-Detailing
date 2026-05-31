@@ -1,7 +1,8 @@
 export const BUSINESS_HOURS = {
-  weekdays: { open: 8, close: 18 },
-  saturday: { open: 9, close: 16 },
-  sunday: null as { open: number; close: number } | null,
+  /** Mon–Fri: after 6 PM */
+  weekdays: { open: 18, close: 22 },
+  /** Sat–Sun: flexible daytime & evening */
+  weekend: { open: 8, close: 20 },
 };
 
 export const SLOT_INTERVAL_MINUTES = 60;
@@ -29,8 +30,7 @@ export function loadBookedSlots(
 function getHoursForDate(dateStr: string): { open: number; close: number } | null {
   const date = new Date(dateStr + "T12:00:00");
   const day = date.getDay();
-  if (day === 0) return BUSINESS_HOURS.sunday;
-  if (day === 6) return BUSINESS_HOURS.saturday;
+  if (day === 0 || day === 6) return BUSINESS_HOURS.weekend;
   return BUSINESS_HOURS.weekdays;
 }
 
@@ -47,11 +47,11 @@ export function getAvailableDates(daysAhead = 30): string[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  for (let i = 1; i <= daysAhead; i++) {
+  for (let i = 0; i <= daysAhead; i++) {
     const d = new Date(today);
     d.setDate(d.getDate() + i);
     const iso = d.toISOString().slice(0, 10);
-    if (isDateBookable(iso)) dates.push(iso);
+    if (isDateBookable(iso) && getTimeSlots(iso).length > 0) dates.push(iso);
   }
   return dates;
 }
@@ -95,4 +95,8 @@ export function formatTimeLabel(time: string): string {
   const period = h >= 12 ? "PM" : "AM";
   const hour12 = h % 12 || 12;
   return `${hour12}:00 ${period}`;
+}
+
+export function getScheduleSummary(): string {
+  return "Weekdays after 6 PM · Weekends anytime (8 AM – 8 PM)";
 }
